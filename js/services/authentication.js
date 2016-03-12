@@ -27,6 +27,10 @@ myApp.factory('Authentication', ['$rootScope', '$firebaseAuth', '$firebaseObject
         $rootScope.message = "Welcome " + user.email;
       }, //login
 
+      logout: function() {
+        return auth.$unauth();
+      }, //logout
+
       register: function(user){
         auth.$createUser({
           email: user.email,
