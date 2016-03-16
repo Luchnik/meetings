@@ -1,13 +1,16 @@
 myApp.controller('CheckinsController', 
-  ['$scope', '$rootScope', '$firebaseObject', '$firebaseArray','$routeParams', 'FIREBASE_URL',
-  function($scope, $rootScope, $firebaseObject, $firebaseArray, $routeParams, FIREBASE_URL) {
+  ['$scope', '$rootScope', '$location', '$firebaseObject', '$firebaseArray','$routeParams', 'FIREBASE_URL',
+  function($scope, $rootScope, $location, $firebaseObject, $firebaseArray, $routeParams, FIREBASE_URL) {
 
   		$scope.whichmeeting = $routeParams.mId;
   		$scope.whichuser = $routeParams.uId;
 
   		var ref = new Firebase(FIREBASE_URL + 'users/' +
   			$scope.whichuser + '/meetings/' +
-  			$scope.whichmeeting + '/checkins'); 
+  			$scope.whichmeeting + '/checkins');
+
+  		var checkinsList = $firebaseArray(ref);
+  		$scope.checkins = checkinsList;
 
   		$scope.addCheckin = function() {
   			var checkinsInfo = $firebaseArray(ref);
@@ -18,7 +21,10 @@ myApp.controller('CheckinsController',
   				date: Firebase.ServerValue.TIMESTAMP
   			};
 
-  			checkinsInfo.$add(myData);
+  			checkinsInfo.$add(myData).then(function() {
+					$location.path('/checkins/' + $scope.whichuser + '/' +
+						$scope.whichmeeting + '/checkinsList');
+  			}); // send data to database
   		}; // addCheckin
 
 
