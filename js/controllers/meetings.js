@@ -13,6 +13,14 @@ myApp.controller('MeetingsController',
 
   				$scope.meetings = meetingsInfo;
 
+  				meetingsInfo.$loaded().then(function(data) {
+  					$rootScope.howManyMeetings = meetingsInfo.length;
+  				}); // make sure meeting data is loaded
+
+  				meetingsInfo.$watch(function(data) {
+  					$rootScope.howManyMeetings = meetingsInfo.length;
+  				});
+
   				$scope.addMeeting = function() {
   					meetingsInfo.$add({
   						name: $scope.meetingname,
