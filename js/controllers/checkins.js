@@ -27,6 +27,15 @@ myApp.controller('CheckinsController',
   			}); // send data to database
   		}; // addCheckin
 
+      $scope.deleteCheckin = function(id) {
+        var refDel = new Firebase(FIREBASE_URL + 'users/' +
+          $scope.whichuser + '/meetings/' +
+          $scope.whichmeeting + '/checkins/' + id);
+
+        var record = $firebaseObject(refDel);
+        record.$remove(id);
+      }; // deleteCheckin
+
 
 
 }]); //controller
