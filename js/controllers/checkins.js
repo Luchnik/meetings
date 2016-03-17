@@ -46,7 +46,7 @@ myApp.controller('CheckinsController',
         $scope.recordId = checkinsList.$keyAt(whichRecord);
       }; // pick winner
 
-      
+
       $scope.showLove = function(myCheckin) {
         myCheckin.show = !myCheckin.show;
 
@@ -56,5 +56,21 @@ myApp.controller('CheckinsController',
           myCheckin.userState = 'expanded';
         }
       }; // showLove
+
+      $scope.giveLove = function(myCheckin, myGift) {
+        var refLove = new Firebase(FIREBASE_URL + 'users/' +
+          $scope.whichuser + '/meetings/' +
+          $scope.whichmeeting + '/checkins/' + myCheckin.$id +
+          '/awards');
+
+        var checkinsArray = $firebaseArray(refLove);
+
+        var myData = {
+          name : myGift,
+          date: Firebase.ServerValue.TIMESTAMP
+        };
+
+        checkinsArray.$add(myData);
+      }; // giveLove
 
 }]); //controller
